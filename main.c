@@ -3151,9 +3151,9 @@ void process_up(void)
             volt_Protect_Accu = 13.8;
          break;
 
-      case 5: // cam bien nhot adc /su dung/ ko dung
-         if (++en_pressure_mn_adc > 2)
-            en_pressure_mn_adc = 2;
+      case 5:                          // cam bien nhot adc /su dung/ ko dung
+         if (++en_pressure_mn_adc > 0) // TODO: Quan trong, tam thoi bo tinh nang nhot adc, khoa menu chi chon dc KO SU DUNG. Ve sau muon dung thi chinh tu 0 len 2
+            en_pressure_mn_adc = 0;
          switch (en_pressure_mn_adc)
          {
          case 1: // vdo 10bar
