@@ -509,13 +509,13 @@ float get_adc_accu(void);
 float get_adc_accu(void)
 {
    float adc_accu = 0;
-   SET_ADC_CHANNEL(8);
+   SET_ADC_CHANNEL(5);
    for (int i = 2000; i != 0; i--)
    {
       float adc_temp = READ_ADC();
       adc_accu = adc_temp > adc_accu ? adc_temp : adc_accu;
    }
-   adc_accu = adc_accu / 10;
+   adc_accu = (adc_accu - 19) * (52.9 / 869) + 1.1;
    return adc_accu;
 }
 
