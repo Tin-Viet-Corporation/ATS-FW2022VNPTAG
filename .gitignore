@@ -95,3 +95,6 @@ disassembly/
 *.tre
 *.STA
 *.err
+*.mcs
+*.mptags
+*.tagsrc

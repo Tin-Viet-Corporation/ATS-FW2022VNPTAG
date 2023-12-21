@@ -384,7 +384,7 @@ char val_tg_off_mn = 0;
 char val_tg_air = 0, tg_air = 0;
 long tg_off_mn = 0;
 short mn_vol_fail = 0;
-char val_tg_giainhiet = 0, tg_giainhiet = 0;
+char val_tg_giainhiet = 0, tg_giainhiet = 0; //TIMER tam dung
 long tong_gio_chay_mn = 0;
 char tong_phut_chay_mn = 0;
 short flag_save_tg_chay_mn = 0;
@@ -415,7 +415,7 @@ float volt_Protect_Accu = 0;
 // tiet kiem nang luong
 char energy_save = 0;
 char val_timer_delay_run_mn = 0;
-long timer_delay_run_mn = 0;
+long timer_delay_run_mn = 0; //tg tri hoan
 long timer_save_oil_mn = 0;
 char flag_zero_delay_run_mn = 0;
 char timer_hour_fail_mn = 0, timer_min_fail_mn = 0, timer_sec_fail_mn = 0;
@@ -481,6 +481,8 @@ unsigned long eerom_Cert_Save = 0;
 
 unsigned long Cert_Data = 3107;
 unsigned char stringData[16];
+
+char flag_do_phong_accu = 0;
 
 //===============================
 
@@ -4016,7 +4018,7 @@ void defaul_data(void)
    val_tg_start_start = 60;
    val_tg_on_dinh_mn = 60;
    val_tg_off_mn = 1;
-   val_tg_giainhiet = 60; // 30 DAT
+   val_tg_giainhiet = 60; // 30 DAT //TIMER tam dung
    val_tg_press_stop = 5;
 
    val_counter_mn_fail = 5;
@@ -5340,10 +5342,11 @@ void auto_run(void)
       case 1: // tri hoan theo thoi gian dinh san
          // TEST Phong Accu
          val_progam = val_progam | 0b00100000;
-         float adc_phong_accu = get_adc_accu();
+         float adc_phong_accu = !flag_do_phong_accu ? get_adc_accu() : PHONG_ACCU_DC_LOW;
          if (adc_phong_accu <= PHONG_ACCU_DC_LOW)
          {
             val_progam = val_progam | 0b00010000;
+            flag_do_phong_accu = 1;
             if (flag_zero_delay_run_mn >= 1)
             {
                flag_zero_delay_run_mn = 0;
@@ -5719,6 +5722,7 @@ void auto_run(void)
          {
             process_kdt_mn = 10; // nghi de lam mat may nổ
             en_out_mn = 0;       //
+            flag_do_phong_accu = 0; // cho phep do phong accu
          }
          //==============
          switch (energy_save)
@@ -7115,9 +7119,9 @@ void interrupt_timer0()
       }
 
       if (timer_delay_run_mn != 0)
-         timer_delay_run_mn--; // delay tri hoan chay may no
+         timer_delay_run_mn--; // delay tri hoan chay may no ko theo khung gio
       if (timer_save_oil_mn != 0)
-         timer_save_oil_mn--; // delay tri hoan chay may no
+         timer_save_oil_mn--; // delay tri hoan chay may no theo khung gio
 
       if (--flag_timer_1s > 59)
       { // timer 1 phut
