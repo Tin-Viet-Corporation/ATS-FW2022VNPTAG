@@ -3889,6 +3889,8 @@ void process_exit(void)
          break;
 
       case 1: // phong accu
+         if (mode_sub < 7)
+            mode_sub = 7;
          break;
 
       case 2: // tri hoan theo thoi gian dinh san
