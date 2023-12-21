@@ -186,6 +186,7 @@
 #define set_min_save_energy_from() lcd_printf(77);
 #define set_hour_save_energy_to() lcd_printf(78);
 #define set_min_save_energy_to() lcd_printf(79);
+#define set_dc_low_accu() lcd_printf(80);
 
 // #define ()         lcd_printf();
 
@@ -384,7 +385,7 @@ char val_tg_off_mn = 0;
 char val_tg_air = 0, tg_air = 0;
 long tg_off_mn = 0;
 short mn_vol_fail = 0;
-char val_tg_giainhiet = 0, tg_giainhiet = 0; //TIMER tam dung
+char val_tg_giainhiet = 0, tg_giainhiet = 0; // TIMER tam dung
 long tong_gio_chay_mn = 0;
 char tong_phut_chay_mn = 0;
 short flag_save_tg_chay_mn = 0;
@@ -415,7 +416,7 @@ float volt_Protect_Accu = 0;
 // tiet kiem nang luong
 char energy_save = 0;
 char val_timer_delay_run_mn = 0;
-long timer_delay_run_mn = 0; //tg tri hoan
+long timer_delay_run_mn = 0; // tg tri hoan
 long timer_save_oil_mn = 0;
 char flag_zero_delay_run_mn = 0;
 char timer_hour_fail_mn = 0, timer_min_fail_mn = 0, timer_sec_fail_mn = 0;
@@ -482,7 +483,9 @@ unsigned long eerom_Cert_Save = 0;
 unsigned long Cert_Data = 3107;
 unsigned char stringData[16];
 
+// phong accu
 char flag_do_phong_accu = 0;
+float input_dc_low = 0;
 
 //===============================
 
@@ -1392,15 +1395,15 @@ void display_center(void)
                                       {"TG TAM DUNG MPD"},
                                       {"CHU KY QUET"}};
 
-   unsigned char menu_sub4[8][20] = {
+   unsigned char menu_sub4[9][20] = {
        {""},
-       {"TIET KIEM DAU MN"}, /*KO SU DUNG / TRI HOAN THOI GIAN/ KHUNG GIO TIET KIEM*/
-       {"LV1: TRI HOAN"},    /*PHUT*/
-       {"LV2: THEO GIO"},    /*GIO*/
-       {"LV2: THEO GIO"},    /*PHUT*/
-       {"LV2: THEO GIO"},    /*GIO*/
-       {"LV2: THEO GIO"}     /*PHUT*/
-   };
+       {"TIET KIEM DAU MN"},  /*KO SU DUNG / TRI HOAN THOI GIAN/ KHUNG GIO TIET KIEM*/
+       {"LV1: TRI HOAN"},     /*PHUT*/
+       {"LV2: THEO GIO"},     /*GIO*/
+       {"LV2: THEO GIO"},     /*PHUT*/
+       {"LV2: THEO GIO"},     /*GIO*/
+       {"LV2: THEO GIO"},     /*PHUT*/
+       {"LV0: ACCU DC LOW"}}; /*VOLT*/
 
    unsigned char menu_sub5[8][20] = {{""},
                                      {"SO LAN MAT DIEN"},
@@ -1449,7 +1452,8 @@ void display_center(void)
                                                {"REMOTE/B.VE ACCU"},
                                                {"BAO VE ACCU"}};
 
-   unsigned char style_energy_save[4][17] = {{"KHONG SU DUNG"},
+   unsigned char style_energy_save[5][17] = {{"KHONG SU DUNG"},
+                                             {"LV0: ACCU DC LOW"},
                                              {"LV1: TRI HOAN"},
                                              {"LV2: THEO GIO"},
                                              {"LV1 + LV2"}};
@@ -2127,6 +2131,9 @@ void display_center(void)
 
       case 6: // khung gio tri hoan chay may no
          set_min_save_energy_to();
+         break;
+      case 7: // nguong DC LOW cho phong accu
+         set_dc_low_accu();
          break;
       }
       break;
@@ -2812,6 +2819,9 @@ void lcd_printf(char code_printf)
    case 79:
       PRINTF(LCD_PUTCHAR, "%02d:%02d - %02d:<%02d>", gio_save_from, phut_save_from, gio_save_to, phut_save_to);
       break;
+   case 80:
+      PRINTF(LCD_PUTCHAR, "%02.1f VOLT", input_dc_low);
+      break;
    }
 }
 
@@ -3094,8 +3104,8 @@ void process_up(void)
          break;
 
       case 1: // lua chon
-         if (++energy_save > 3)
-            energy_save = 3;
+         if (++energy_save > 4)
+            energy_save = 4;
          break;
 
       case 2: // thoi gian tiet kiem nang luong
@@ -3121,6 +3131,11 @@ void process_up(void)
       case 6:
          if (++phut_save_to > 59)
             phut_save_to = 0;
+         break;
+      case 7:
+         input_dc_low += 0.1;
+         if (input_dc_low > 60)
+            input_dc_low = 40;
          break;
       }
       break;
@@ -3535,7 +3550,7 @@ void process_down(void)
          break;
 
       case 1: // lua chon
-         if (--energy_save > 3)
+         if (--energy_save > 4)
             energy_save = 0;
          break;
 
@@ -3562,6 +3577,13 @@ void process_down(void)
       case 6:
          if (--phut_save_to > 59)
             phut_save_to = 59;
+         break;
+      case 7:
+         input_dc_low -= 0.1;
+         if (input_dc_low < 40)
+         {
+            input_dc_low = 60;
+         }
          break;
       }
       break;
@@ -3857,7 +3879,7 @@ void process_exit(void)
       break;
 
    case 4: //
-      if (++mode_sub > 6)
+      if (++mode_sub > 7)
          mode_sub = 1;
 
       switch (energy_save)
@@ -3866,17 +3888,20 @@ void process_exit(void)
          mode_sub = 1;
          break;
 
-      case 1: // tri hoan theo thoi gian dinh san
+      case 1: // phong accu
+         break;
+
+      case 2: // tri hoan theo thoi gian dinh san
          if (mode_sub > 2)
             mode_sub = 1;
          break;
 
-      case 2: // tri hoan theo khung gio
+      case 3: // tri hoan theo khung gio
          if (mode_sub == 2)
             mode_sub = 3;
          break;
 
-      case 3:
+      case 4:
 
          break;
       }
@@ -4269,7 +4294,7 @@ void check_full(void)
    }
 
    // tiet kiem nang luong
-   if (energy_save > 3)
+   if (energy_save > 4)
    {
       energy_save = 0;
       waitingData = 1;
@@ -5720,8 +5745,8 @@ void auto_run(void)
          en_out_mn = 1; // dong khoi dong tu cap NGUONG cho dai
          if (tg_run_on == 0 && tg_phut_run_on == 0)
          {
-            process_kdt_mn = 10; // nghi de lam mat may nổ
-            en_out_mn = 0;       //
+            process_kdt_mn = 10;    // nghi de lam mat may nổ
+            en_out_mn = 0;          //
             flag_do_phong_accu = 0; // cho phep do phong accu
          }
          //==============
