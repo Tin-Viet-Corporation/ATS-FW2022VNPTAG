@@ -2825,7 +2825,7 @@ void lcd_printf(char code_printf)
       PRINTF(LCD_PUTCHAR, "%02d:%02d - %02d:<%02d>", gio_save_from, phut_save_from, gio_save_to, phut_save_to);
       break;
    case 80:
-      PRINTF(LCD_PUTCHAR, "%02.1f VOLT", input_dc_low);
+      PRINTF(LCD_PUTCHAR, "ACCU:%02.1fV", input_dc_low);
       break;
    }
 }
