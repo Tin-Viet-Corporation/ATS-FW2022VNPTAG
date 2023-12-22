@@ -309,8 +309,6 @@
 #define ee_Hour_Save_To ee_Min_Save_From + 1   // 1byte
 #define ee_Min_Save_To ee_Hour_Save_To + 1     // 1byte
 
-#define PHONG_ACCU_DC_LOW 30 // Long Lam Phong Accu
-
 //=============================================================
 // khai bao bien
 long i = 0;
@@ -510,7 +508,7 @@ void Hash_Full(void);
 void check_full(void);
 float get_adc_accu(void);
 
-// Long Lam Phong Accu============
+// Phong Accu============
 float get_adc_accu(void)
 {
    float adc_accu = 0;
@@ -5298,18 +5296,15 @@ void auto_run(void)
       switch (energy_save)
       {
       case 0: // cup dien chay luon
+      case 1: // phong accu
          timer_delay_run_mn = 0;
          break;
 
-      case 1: // tri hoan theo thoi gian dinh san
-         // timer_delay_run_mn = val_timer_delay_run_mn;
-         // timer_delay_run_mn=timer_delay_run_mn*60;
-
-         // TEST Phong Accu
-
+      case 2: // tri hoan theo thoi gian dinh san
+         timer_delay_run_mn = val_timer_delay_run_mn;
          break;
 
-      case 2: // tri hoan theo khung gio
+      case 3: // tri hoan theo khung gio
          if (tempnow >= tempfrom)
          { // che do tiet kiem nang luong
             timer_delay_run_mn = (24 * 60) - tempfrom + tempto;
@@ -5324,7 +5319,7 @@ void auto_run(void)
          }
          break;
 
-      case 3: // tri hoan va khung gio
+      case 4: // tri hoan va khung gio
          if (tempnow >= tempfrom)
          { // che do tiet kiem nang luong
             timer_delay_run_mn = MAX((24 * 60) - tempfrom + tempto, val_timer_delay_run_mn);
@@ -5369,11 +5364,11 @@ void auto_run(void)
          val_progam = val_progam | 0b00110000;
          break;
 
-      case 1: // tri hoan theo thoi gian dinh san
-         // TEST Phong Accu
+      case 1:
+         // Phong Accu
          val_progam = val_progam | 0b00100000;
-         float adc_phong_accu = !flag_do_phong_accu ? get_adc_accu() : PHONG_ACCU_DC_LOW;
-         if (adc_phong_accu <= PHONG_ACCU_DC_LOW)
+         float adc_phong_accu = !flag_do_phong_accu ? get_adc_accu() : input_dc_low;
+         if (adc_phong_accu <= input_dc_low)
          {
             val_progam = val_progam | 0b00010000;
             flag_do_phong_accu = 1;
@@ -5381,15 +5376,12 @@ void auto_run(void)
             {
                flag_zero_delay_run_mn = 0;
                waitingData = 1;
-               // PCF8583_write_byte(ds1307_flag_zero_delay_run_mn,flag_zero_delay_run_mn);
-               // wee(ee_flag_zero_delay_run_mn,flag_zero_delay_run_mn);
-               // Hash_Full();
             }
-            // write_ram_ds1307();
          }
          break;
-      case 2:
+      case 2: // tri hoan theo thoi gian dinh san
       case 3:
+      case 4:
          val_progam = val_progam | 0b00100000;
 
          if (timer_delay_run_mn == 0)
