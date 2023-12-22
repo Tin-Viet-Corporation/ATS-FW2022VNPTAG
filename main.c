@@ -3605,7 +3605,7 @@ void process_down(void)
          break;
       case 8:
          delta_dc -= 0.1;
-         if (delta_dc > 1)
+         if (delta_dc < 0)
          {
             delta_dc = 1;
          }
