@@ -3153,7 +3153,7 @@ void process_up(void)
       case 8:
          delta_dc += 0.1;
          if (delta_dc > 1)
-            delta_dc = 0.1;
+            delta_dc = 0;
          break;
       }
       break;
@@ -3605,7 +3605,7 @@ void process_down(void)
          break;
       case 8:
          delta_dc -= 0.1;
-         if (delta_dc < 0.1)
+         if (delta_dc > 1)
          {
             delta_dc = 1;
          }
