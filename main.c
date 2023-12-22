@@ -1395,7 +1395,7 @@ void display_center(void)
                                       {"TG TAM DUNG MPD"},
                                       {"CHU KY QUET"}};
 
-   unsigned char menu_sub4[9][20] = {
+   unsigned char menu_sub4[10][20] = {
        {""},
        {"TIET KIEM DAU MN"},  /*KO SU DUNG / TRI HOAN THOI GIAN/ KHUNG GIO TIET KIEM*/
        {"LV1: TRI HOAN"},     /*PHUT*/
@@ -1403,7 +1403,8 @@ void display_center(void)
        {"LV2: THEO GIO"},     /*PHUT*/
        {"LV2: THEO GIO"},     /*GIO*/
        {"LV2: THEO GIO"},     /*PHUT*/
-       {"LV0: D.AP DC LOW"}}; /*VOLT*/
+       {"LV0: D.AP DC LOW"},  /*VOLT*/
+       {"LV0: D.AP DC LOW"}}; /*DELTA VOLT*/
 
    unsigned char menu_sub5[8][20] = {{""},
                                      {"SO LAN MAT DIEN"},
@@ -2143,6 +2144,7 @@ void display_center(void)
          set_dc_low_accu();
          break;
       case 8:
+         set_delta_dc_low_accu();
          break;
       }
       break;
@@ -2832,7 +2834,7 @@ void lcd_printf(char code_printf)
       PRINTF(LCD_PUTCHAR, "ACCU:%02.1fV", input_dc_low);
       break;
    case 81:
-      PRINTF(LCD_PUTCHAR, "DELTA:%02.1fV", input_dc_low);
+      PRINTF(LCD_PUTCHAR, "DELTA:%02.1fV", delta_dc);
       break;
    }
 }
@@ -3147,6 +3149,11 @@ void process_up(void)
          input_dc_low += 0.1;
          if (input_dc_low > 60)
             input_dc_low = 40;
+         break;
+      case 8:
+         delta_dc += 0.1;
+         if (delta_dc > 1)
+            delta_dc = 0.1;
          break;
       }
       break;
@@ -3596,6 +3603,13 @@ void process_down(void)
             input_dc_low = 60;
          }
          break;
+      case 8:
+         delta_dc -= 0.1;
+         if (delta_dc < 0.1)
+         {
+            delta_dc = 1;
+         }
+         break;
       }
       break;
 
@@ -3890,7 +3904,7 @@ void process_exit(void)
       break;
 
    case 4: //
-      if (++mode_sub > 7)
+      if (++mode_sub > 8)
          mode_sub = 1;
 
       switch (energy_save)
@@ -5381,8 +5395,8 @@ void auto_run(void)
       case 1:
          // Phong Accu
          val_progam = val_progam | 0b00100000;
-         float adc_phong_accu = !flag_do_phong_accu ? get_adc_accu() : input_dc_low;
-         if (adc_phong_accu <= input_dc_low)
+         float adc_phong_accu = !flag_do_phong_accu ? get_adc_accu() : input_dc_low - delta_dc;
+         if (adc_phong_accu <= input_dc_low - delta_dc)
          {
             val_progam = val_progam | 0b00010000;
             flag_do_phong_accu = 1;
