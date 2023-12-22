@@ -5295,10 +5295,10 @@ void auto_run(void)
       switch (energy_save)
       {
       case 0: // cup dien chay luon
-      case 1: // phong accu
          timer_delay_run_mn = 0;
          break;
-
+      case 1: // phong accu
+         break;
       case 2: // tri hoan theo thoi gian dinh san
          timer_delay_run_mn = val_timer_delay_run_mn;
          break;
