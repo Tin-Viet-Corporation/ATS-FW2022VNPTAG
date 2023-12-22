@@ -3889,7 +3889,7 @@ void process_exit(void)
          break;
 
       case 1: // phong accu
-         if (mode_sub < 7)
+         if (mode_sub < 7 && mode_sub > 1)
             mode_sub = 7;
          break;
 
@@ -3901,10 +3901,13 @@ void process_exit(void)
       case 3: // tri hoan theo khung gio
          if (mode_sub == 2)
             mode_sub = 3;
+         if (mode_sub > 6)
+            mode_sub = 1;
          break;
 
       case 4:
-
+         if (mode_sub > 6)
+            mode_sub = 1;
          break;
       }
       break;
