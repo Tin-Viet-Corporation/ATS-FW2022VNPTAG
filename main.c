@@ -1659,10 +1659,18 @@ void display_center(void)
                //  val_phut_giay_printf();
 
                LCD_PUTCMD(Line_1); // Dua hien thi chu dau dong hang` dau
-               PRINTF(LCD_PUTCHAR, "%s", "PHONG ACCU");
+               PRINTF(LCD_PUTCHAR, "%s", menu_main[4]);
                clear_lcd();
                LCD_PUTCMD(Line_2); // Dua hien thi chu dau dong hang` duoi
-               PRINTF(LCD_PUTCHAR, "DC:%02.1fV", get_adc_accu());
+               if (energy_save == 1)
+               {
+                  PRINTF(LCD_PUTCHAR, "ACCU:%02.1fV", get_adc_accu());
+               }
+               else
+               {
+                  val_printf = timer_delay_run_mn;
+                  val_phut_giay_printf();
+               }
                clear_lcd();
                break;
 
