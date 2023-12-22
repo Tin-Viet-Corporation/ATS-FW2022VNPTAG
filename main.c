@@ -2952,7 +2952,6 @@ void process_up(void)
             break;
 
          case 3:
-            // defaul_data();
             defaul_data();
             write_ram_ds1307();
             write_data_ee();
@@ -5750,11 +5749,12 @@ void auto_run(void)
          switch (energy_save)
          {
          case 0: // cup dien chay luon
-         case 1: // tri hoan theo thoi gian dinh san
+         case 1: // phong accu
+         case 2: // tri hoan theo thoi gian dinh san
             break;
 
-         case 2: // tri hoan theo khung gio
-         case 3: // tri hoan va khung gio
+         case 3: // tri hoan theo khung gio
+         case 4: // tri hoan va khung gio
             if (tempnow >= tempfrom)
             { // che do tiet kiem nang luong
                timer_save_oil_mn = (24 * 60) - tempfrom + tempto;
@@ -6131,12 +6131,13 @@ void auto_run(void)
          switch (energy_save)
          {
          case 0: // cup dien chay luon
-         case 1: // tri hoan theo thoi gian dinh san
+         case 1: // phong accu
+         case 2: // tri hoan theo thoi gian dinh san
             process_kdt_mn = 0;
             break;
 
-         case 2: // tri hoan theo khung gio
-         case 3: // tri hoan va khung gio
+         case 3: // tri hoan theo khung gio
+         case 4: // tri hoan va khung gio
             if (timer_save_oil_mn == 0)
             { // che do tiet kiem nang luong
                process_kdt_mn = 0;
