@@ -187,6 +187,7 @@
 #define set_hour_save_energy_to() lcd_printf(78);
 #define set_min_save_energy_to() lcd_printf(79);
 #define set_dc_low_accu() lcd_printf(80);
+#define set_delta_dc_low_accu() lcd_printf(81);
 
 // #define ()         lcd_printf();
 
@@ -484,6 +485,7 @@ unsigned char stringData[16];
 // phong accu
 char flag_do_phong_accu = 0;
 float input_dc_low = 0;
+float delta_dc = 0;
 
 //===============================
 
@@ -1401,7 +1403,7 @@ void display_center(void)
        {"LV2: THEO GIO"},     /*PHUT*/
        {"LV2: THEO GIO"},     /*GIO*/
        {"LV2: THEO GIO"},     /*PHUT*/
-       {"LV0: ACCU DC LOW"}}; /*VOLT*/
+       {"LV0: D.AP DC LOW"}}; /*VOLT*/
 
    unsigned char menu_sub5[8][20] = {{""},
                                      {"SO LAN MAT DIEN"},
@@ -1451,7 +1453,7 @@ void display_center(void)
                                                {"BAO VE ACCU"}};
 
    unsigned char style_energy_save[5][17] = {{"KHONG SU DUNG"},
-                                             {"LV0: ACCU DC LOW"},
+                                             {"LV0: D.AP DC LOW"},
                                              {"LV1: TRI HOAN"},
                                              {"LV2: THEO GIO"},
                                              {"LV1 + LV2"}};
@@ -2140,6 +2142,8 @@ void display_center(void)
       case 7: // nguong DC LOW cho phong accu
          set_dc_low_accu();
          break;
+      case 8:
+         break;
       }
       break;
 
@@ -2826,6 +2830,9 @@ void lcd_printf(char code_printf)
       break;
    case 80:
       PRINTF(LCD_PUTCHAR, "ACCU:%02.1fV", input_dc_low);
+      break;
+   case 81:
+      PRINTF(LCD_PUTCHAR, "DELTA:%02.1fV", input_dc_low);
       break;
    }
 }
@@ -5304,7 +5311,8 @@ void auto_run(void)
       case 0: // cup dien chay luon
          timer_delay_run_mn = 0;
          break;
-      case 1: // phong accu
+      case 1:                    // phong accu
+         flag_do_phong_accu = 0; // cho phep do phong accu
          break;
       case 2: // tri hoan theo thoi gian dinh san
          timer_delay_run_mn = val_timer_delay_run_mn;
