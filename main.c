@@ -1671,7 +1671,6 @@ void display_center(void)
                   val_printf = timer_delay_run_mn;
                   val_phut_giay_printf();
                }
-               clear_lcd();
                break;
 
             case 224:              // xoa chuong trinh test may no
