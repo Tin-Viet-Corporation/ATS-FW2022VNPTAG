@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <MATH.H>
 #include <stdio.h>
+#include "headers/const.h"
 #define MIN(i, j) (((i) < (j)) ? (i) : (j))
 #define MAX(i, j) (((i) > (j)) ? (i) : (j))
 //============================
@@ -60,7 +61,7 @@
 #define OUT_FUEL_MN_OFF() output_low(OUT_FUEL_MN);
 
 // CHAN INPUT REMOTE START
-// #define INPUT_REMOTE            PIN_E1
+#define OUT_ERROR PIN_E1
 // #define INPUT_REMOTE            PIN_C7
 // #define   val_remote()            input(INPUT_REMOTE)
 
@@ -4087,6 +4088,10 @@ void defaul_data(void)
    phut_save_from = 0;
    gio_save_to = 5;
    phut_save_to = 0;
+   //==========
+
+   input_dc_low = 47;
+   delta_dc = 0.2;
    //==========
 
    val_pressure_max = 2;
