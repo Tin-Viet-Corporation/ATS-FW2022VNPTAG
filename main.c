@@ -2622,7 +2622,14 @@ void lcd_printf(char code_printf)
       break;
 
    case 35:
-      PRINTF(LCD_PUTCHAR, "MPD LOI%s", (flag_accu_error ? "|ACCU LOI" : " "));
+      if (flag_accu_error)
+      {
+         PRINTF(LCD_PUTCHAR, "MPD LOI|ACCU LOI");
+      }
+      else
+      {
+         PRINTF(LCD_PUTCHAR, "MPD LOI");
+      }
       break;
 
    case 36:
