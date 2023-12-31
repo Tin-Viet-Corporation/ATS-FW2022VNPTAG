@@ -2722,7 +2722,7 @@ void lcd_printf(char code_printf)
          }
          if (style_mod_ac == 0)
          {
-            PRINTF(LCD_PUTCHAR, "AC:%02.0fV|DC:%02.1fV", adc_pha1, get_adc_accu());
+            PRINTF(LCD_PUTCHAR, "AC:%02.0fV DC:%02.1fV", adc_pha1, get_adc_accu());
          }
       }
       //   PRINTF(LCD_PUTCHAR,"%02.1fV",volt_ChargeDC);
