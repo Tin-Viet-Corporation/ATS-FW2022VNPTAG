@@ -487,6 +487,7 @@ unsigned char stringData[16];
 char flag_do_phong_accu = 0;
 float input_dc_low = 0;
 float delta_dc = 0;
+char flag_accu_error = 0;
 
 //===============================
 
@@ -2621,7 +2622,7 @@ void lcd_printf(char code_printf)
       break;
 
    case 35:
-      PRINTF(LCD_PUTCHAR, "MPD LOI|ACCU LOI");
+      PRINTF(LCD_PUTCHAR, "MPD LOI %s", flag_accu_error ? "|ACCU LOI" : "");
       break;
 
    case 36:
@@ -5404,6 +5405,7 @@ void auto_run(void)
          if (adc_phong_accu <= DC_LOW_LVL_2)
          {
             output_high(OUT_ACCU_ERROR);
+            flag_accu_error = 1;
          }
          if (adc_phong_accu <= input_dc_low - delta_dc)
          {
