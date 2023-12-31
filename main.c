@@ -3217,8 +3217,8 @@ void process_up(void)
          break;
 
       case 7: // cam bien nhiet do adc /su dung/ ko dung
-         if (++en_temp_mn_adc > 2)
-            en_temp_mn_adc = 2;
+         if (++en_temp_mn_adc > 0)
+            en_temp_mn_adc = 0;
          switch (en_temp_mn_adc)
          {
          case 1: // vdo 120 do
@@ -3672,7 +3672,7 @@ void process_down(void)
          break;
 
       case 7: // cam bien nhiet do adc /su dung/ ko dung
-         if (--en_temp_mn_adc > 2)
+         if (--en_temp_mn_adc > 0)
             en_temp_mn_adc = 0;
          switch (en_temp_mn_adc)
          {
