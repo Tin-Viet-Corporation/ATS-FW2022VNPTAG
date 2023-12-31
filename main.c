@@ -61,7 +61,7 @@
 #define OUT_FUEL_MN_OFF() output_low(OUT_FUEL_MN);
 
 // CHAN INPUT REMOTE START
-#define OUT_ERROR PIN_E1
+#define OUT_ACCU_ERROR PIN_E1
 // #define INPUT_REMOTE            PIN_C7
 // #define   val_remote()            input(INPUT_REMOTE)
 
@@ -4090,8 +4090,8 @@ void defaul_data(void)
    phut_save_to = 0;
    //==========
 
-   input_dc_low = 47;
-   delta_dc = 0.2;
+   input_dc_low = DC_LOW_LVL_1_MD;
+   delta_dc = DC_LOW_DELTA_MD;
    //==========
 
    val_pressure_max = 2;
@@ -5401,6 +5401,10 @@ void auto_run(void)
          // Phong Accu
          val_progam = val_progam | 0b00100000;
          float adc_phong_accu = !flag_do_phong_accu ? get_adc_accu() : input_dc_low - delta_dc;
+         if (adc_phong_accu <= DC_LOW_LVL_2)
+         {
+            output_high(OUT_ACCU_ERROR);
+         }
          if (adc_phong_accu <= input_dc_low - delta_dc)
          {
             val_progam = val_progam | 0b00010000;
