@@ -2621,7 +2621,7 @@ void lcd_printf(char code_printf)
       break;
 
    case 35:
-      PRINTF(LCD_PUTCHAR, "KH.DONG THAT BAI");
+      PRINTF(LCD_PUTCHAR, "MPD LOI|ACCU LOI");
       break;
 
    case 36:
