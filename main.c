@@ -2741,7 +2741,7 @@ void lcd_printf(char code_printf)
 
             if (flag_accu_error)
             {
-               PRINTF(LCD_PUTCHAR, "|ACCU LOI");
+               PRINTF(LCD_PUTCHAR, "ACCU LOI");
             }
             else
             {
