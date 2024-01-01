@@ -153,6 +153,7 @@
 #define log_tg_run() lcd_printf(47);
 
 // #define log_fail_start()      lcd_printf(48);
+#define log_accu_error() lcd_printf(82);
 #define log_error_code() lcd_printf(48);
 #define log_fail_ac() lcd_printf(49);
 #define giainhietmn() lcd_printf(50);
@@ -488,6 +489,7 @@ char flag_do_phong_accu = 0;
 float input_dc_low = 0;
 float delta_dc = 0;
 char flag_accu_error = 0;
+char flag_accu_error_save_log = 0;
 
 //===============================
 
@@ -1408,10 +1410,11 @@ void display_center(void)
        {"LV0: D.AP DC LOW"},  /*VOLT*/
        {"LV0: D.AP DC LOW"}}; /*DELTA VOLT*/
 
-   unsigned char menu_sub5[8][20] = {{""},
+   unsigned char menu_sub5[9][20] = {{""},
                                      {"SO LAN MAT DIEN"},
                                      {"T.GIAN CHAY MN"},
                                      {"MAY NO ERROR LOG"},
+                                     {"ACCU ERROR LOG"},
                                      {"XOA LOG"}};
 
    unsigned char menu_sub6[12][17] = {{""},
@@ -2325,7 +2328,11 @@ void display_center(void)
          //   log_fail_start();
          break;
 
-      case 4: // XOA LOG
+      case 4: // ACCU ERROR LOG
+         log_accu_error();
+         break;
+
+      case 5: // XOA LOG
          yesno();
          break;
       }
@@ -2861,6 +2868,16 @@ void lcd_printf(char code_printf)
    case 81:
       PRINTF(LCD_PUTCHAR, "DELTA:%02.1fV", delta_dc);
       break;
+   case 82:
+      if (flag_accu_error_save_log)
+      {
+         PRINTF(LCD_PUTCHAR, "ACCU HONG NANG");
+      }
+      else
+      {
+         PRINTF(LCD_PUTCHAR, "BINH THUONG");
+      }
+      break;
    }
 }
 
@@ -3387,7 +3404,11 @@ void process_up(void)
 
          break;
 
-      case 4: // XOA LOG
+      case 4:
+
+         break;
+
+      case 5: // XOA LOG
          tong_gio_chay_mn = 0;
          tong_phut_chay_mn = 0;
          error_code = 0;
@@ -3396,6 +3417,7 @@ void process_up(void)
          en_led_fail_mn = 0;
          mode_sub = 0;
          mode = 0;
+         flag_accu_error_save_log = 0;
          // press_button=1;
          break;
       }
@@ -3823,11 +3845,14 @@ void process_down(void)
 
          break;
 
-      case 3: // XOA LOG
+      case 3:
 
          break;
 
-      case 4:
+      case 4: // ACCU ERROR LOG
+         break;
+
+      case 5: // XOA LOG
          mode_sub = 0;
          mode = 0;
          break;
@@ -4041,12 +4066,12 @@ void process_exit(void)
       switch (flag_admin)
       {
       default: // cho xem tat ca cai dat
-         if (++mode_sub > 4)
+         if (++mode_sub > 5)
             mode_sub = 1;
          break;
 
       case 0: // gioi han cai tat
-         if (++mode_sub > 3)
+         if (++mode_sub > 4)
             mode_sub = 1;
          break;
       }
@@ -5429,6 +5454,7 @@ void auto_run(void)
          {
             output_high(OUT_ACCU_ERROR);
             flag_accu_error = 1;
+            flag_accu_error_save_log = 1;
          }
          if (adc_phong_accu <= input_dc_low - delta_dc)
          {
