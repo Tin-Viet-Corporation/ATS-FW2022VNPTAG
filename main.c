@@ -4871,8 +4871,8 @@ void read_ram_ds1307(void)
       phut_save_to = ram_phut_save_to;
       //==========
 
-      input_dc_low = ram_input_dc_low / 10;
-      delta_dc = ram_delta_dc / 10;
+      input_dc_low = (float)ram_input_dc_low / 10;
+      delta_dc = (float)ram_delta_dc / 10;
       flag_accu_error_save_log = ram_flag_accu_error_save_log;
 
       write_data_ee();
@@ -4949,8 +4949,8 @@ void read_ram_ds1307(void)
       phut_save_to = eedata_phut_save_to;
       //==========
 
-      input_dc_low = eedata_input_dc_low / 10;
-      delta_dc = eedata_delta_dc / 10;
+      input_dc_low = (float)eedata_input_dc_low / 10;
+      delta_dc = (float)eedata_delta_dc / 10;
       flag_accu_error_save_log = eedata_flag_accu_error_save_log;
 
       write_ram_ds1307();
