@@ -4582,10 +4582,10 @@ void read_ram_ds1307(void)
    char eedata_phut_save_to = ree(ee_Min_Save_To);
    eerom_Hash_Data = eerom_Hash_Data + eedata_phut_save_to; //*
 
-   unsigned long eedata_input_dc_low = ree(ee_input_dc_low);
+   unsigned long eedata_input_dc_low = ree16(ee_input_dc_low);
    eerom_Hash_Data += eedata_input_dc_low;
 
-   unsigned long eedata_delta_dc = ree(ee_delta_dc);
+   unsigned long eedata_delta_dc = ree16(ee_delta_dc);
    eerom_Hash_Data += ee_delta_dc;
 
    char eedata_flag_accu_error_save_log = ree(ee_flag_accu_error_save_log);
@@ -5143,8 +5143,8 @@ void write_data_ee(void)
    wee(ee_Min_Save_To, phut_save_to);
    //=======
 
-   wee(ee_input_dc_low, (int)(input_dc_low * 10));
-   wee(ee_delta_dc, (int)(delta_dc * 10));
+   wee16(ee_input_dc_low, (unsigned long)(input_dc_low * 10));
+   wee16(ee_delta_dc, (unsigned long)(delta_dc * 10));
    wee(ee_flag_accu_error_save_log, flag_accu_error_save_log);
 }
 
