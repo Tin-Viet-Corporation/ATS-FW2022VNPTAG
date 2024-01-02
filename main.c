@@ -4789,14 +4789,14 @@ void read_ram_ds1307(void)
    ram_Hash_Data = ram_Hash_Data + ram_phut_save_to; //*
 
    //=======
-   unsigned long ram_input_dc_low = make16(PCF8583_read_byte(ds1307_input_dc_low + 1), PCF8583_read_byte(ds1307_input_dc_low));
-   ram_Hash_Data += ram_input_dc_low;
+   // unsigned long ram_input_dc_low = make16(PCF8583_read_byte(ds1307_input_dc_low + 1), PCF8583_read_byte(ds1307_input_dc_low));
+   // ram_Hash_Data += ram_input_dc_low;
 
-   unsigned long ram_delta_dc = make16(PCF8583_read_byte(ds1307_delta_dc + 1), PCF8583_read_byte(ds1307_delta_dc));
-   ram_Hash_Data += ram_delta_dc;
+   // unsigned long ram_delta_dc = make16(PCF8583_read_byte(ds1307_delta_dc + 1), PCF8583_read_byte(ds1307_delta_dc));
+   // ram_Hash_Data += ram_delta_dc;
 
-   char ram_flag_accu_error_save_log = PCF8583_read_byte(ds1307_flag_accu_error_save_log);
-   ram_Hash_Data += ram_flag_accu_error_save_log;
+   // char ram_flag_accu_error_save_log = PCF8583_read_byte(ds1307_flag_accu_error_save_log);
+   // ram_Hash_Data += ram_flag_accu_error_save_log;
 
    ram_Hash_Save = make16(PCF8583_read_byte(ds1307_Hash_Data + 1), PCF8583_read_byte(ds1307_Hash_Data));
 
@@ -4871,9 +4871,9 @@ void read_ram_ds1307(void)
       phut_save_to = ram_phut_save_to;
       //==========
 
-      input_dc_low = ram_input_dc_low / 10;
-      delta_dc = ram_delta_dc / 10;
-      flag_accu_error_save_log = ram_flag_accu_error_save_log;
+      // input_dc_low = ram_input_dc_low / 10;
+      // delta_dc = ram_delta_dc / 10;
+      // flag_accu_error_save_log = ram_flag_accu_error_save_log;
 
       write_data_ee();
       Hash_Full();
