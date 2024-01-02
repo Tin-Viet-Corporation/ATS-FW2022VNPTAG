@@ -12,6 +12,8 @@
 #include <MATH.H>
 #include <stdio.h>
 #include "headers/const.h"
+#include "headers/ram.h"
+#include "headers/eeprom.h"
 #define MIN(i, j) (((i) < (j)) ? (i) : (j))
 #define MAX(i, j) (((i) > (j)) ? (i) : (j))
 //============================
@@ -191,126 +193,12 @@
 #define set_dc_low_accu() lcd_printf(80);
 #define set_delta_dc_low_accu() lcd_printf(81);
 
-// #define ()         lcd_printf();
-
-#define ds1307_counter_ac_fail 0x11
-#define ds1307_error_code ds1307_counter_ac_fail + 1                    // 0x12
-#define ds1307_tong_gio_chay_mn ds1307_error_code + 1                   // 0x13   //2byte
-#define ds1307_tong_phut_chay_mn ds1307_tong_gio_chay_mn + 2            // 0x15
-#define ds1307_energy_save ds1307_tong_phut_chay_mn + 1                 // 0x16
-#define ds1307_level_set_ac_fail ds1307_energy_save + 1                 // 0x17
-#define ds1307_ac_vol_max ds1307_level_set_ac_fail + 1                  // 0x18   //2byte
-#define ds1307_ac_vol_min ds1307_ac_vol_max + 2                         // 0x1a
-#define ds1307_val_tg_on_dinh_ac ds1307_ac_vol_min + 1                  // 0x1b
-#define ds1307_mn_vol_max ds1307_val_tg_on_dinh_ac + 1                  // 0x1c
-#define ds1307_mn_vol_min ds1307_mn_vol_max + 1                         // 0x1d
-#define ds1307_val_counter_start ds1307_mn_vol_min + 1                  // 0x1e
-#define ds1307_val_tg_run_on ds1307_val_counter_start + 1               // 0x1f
-#define ds1307_val_tg_preheat ds1307_val_tg_run_on + 1                  // 0x20
-#define ds1307_val_tg_press_start ds1307_val_tg_preheat + 1             // 0x21
-#define ds1307_val_tg_on_dinh_mn ds1307_val_tg_press_start + 1          // 0x22
-#define ds1307_val_tg_off_mn ds1307_val_tg_on_dinh_mn + 1               // 0x23
-#define ds1307_val_tg_giainhiet ds1307_val_tg_off_mn + 1                // 0x24
-#define ds1307_en_temp_mn ds1307_val_tg_giainhiet + 1                   // 0x25
-#define ds1307_en_pressure_mn ds1307_en_temp_mn + 1                     // 0x26
-#define ds1307_val_timer_delay_run_mn ds1307_en_pressure_mn + 1         // 0x27
-#define ds1307_style_mod_ac ds1307_val_timer_delay_run_mn + 1           // 0x28
-#define ds1307_flag_zero_delay_run_ac ds1307_style_mod_ac + 1           // 0x29
-#define ds1307_flag_zero_delay_run_mn ds1307_flag_zero_delay_run_ac + 1 // 0x2a
-#define ds1307_val_tg_start_start ds1307_flag_zero_delay_run_mn + 1     // 0x2b
-#define ds1307_val_counter_ac_fail ds1307_val_tg_start_start + 1        // 0x2c
-#define ds1307_val_counter_mn_fail ds1307_val_counter_ac_fail + 1       // 0x2d
-#define ds1307_val_tg_press_stop ds1307_val_counter_mn_fail + 1         // 0x2e
-#define ds1307_en_temp_adc_mn ds1307_val_tg_press_stop + 1              // 0x2f
-#define ds1307_en_pressure_adc_mn ds1307_en_temp_adc_mn + 1             // 0x30
-#define ds1307_list_resistor_pressure ds1307_en_pressure_adc_mn + 1     // 0x31 //6byte
-#define ds1307_list_resistor_temp ds1307_list_resistor_pressure + 6     // 0x37 //11byte
-#define ds1307_temp_adc_max ds1307_list_resistor_temp + 11              // 0x42
-#define ds1307_pressure_adc_max ds1307_temp_adc_max + 1                 // 0x43
-
-#define ds1307_val_tg_air ds1307_pressure_adc_max + 1  // 0x44
-#define ds1307_time_check_sensor ds1307_val_tg_air + 1 // 0x45
-
-#define ds1307_thu_test ds1307_time_check_sensor + 1 // 0x46
-#define ds1307_gio_test ds1307_thu_test + 1          // 0x47
-#define ds1307_phut_test ds1307_gio_test + 1         // 0x48
-// #define   ds1307_val_remote_start         0x49
-#define ds1307_chu_ky_test ds1307_phut_test + 1           // 0x4a
-#define ds1307_chu_ky_hien_tai ds1307_chu_ky_test + 1     // 0x4b
-#define ds1307_Control_input ds1307_chu_ky_hien_tai + 1   // 0x4c
-#define ds1307_volt_Protect_Accu ds1307_Control_input + 1 // 0x4d
-
-#define ds1307_Hash_Data ds1307_volt_Protect_Accu + 1 // 2byte
-#define ds1307_Cert_Data ds1307_Hash_Data + 2         // 2byte
-
-#define ds1307_Hour_Save_From ds1307_Cert_Data + 2     // 1byte
-#define ds1307_Min_Save_From ds1307_Hour_Save_From + 1 // 1byte
-#define ds1307_Hour_Save_To ds1307_Min_Save_From + 1   // 1byte
-#define ds1307_Min_Save_To ds1307_Hour_Save_To + 1     // 1byte
-
-// bit cuoi cung ff
-
 // eerom
 //=========================================================================
 #define ree(x) read_eeprom(x);
 #define ree16(x) read_eeprom16(x);
 #define wee(x, y) write_eeprom(x, y);
 #define wee16(x, y) write_eeprom16(x, y);
-
-#define BEGIN_EEADDR 0x00
-#define ee_counter_ac_fail BEGIN_EEADDR + 0
-#define ee_error_code ee_counter_ac_fail + 1
-#define ee_tong_gio_chay_mn ee_error_code + 1 // 2byte
-#define ee_tong_phut_chay_mn ee_tong_gio_chay_mn + 2
-#define ee_energy_save ee_tong_phut_chay_mn + 1
-#define ee_level_set_ac_fail ee_energy_save + 1
-#define ee_ac_vol_max ee_level_set_ac_fail + 1 // 2byte
-#define ee_ac_vol_min ee_ac_vol_max + 2
-#define ee_val_tg_on_dinh_ac ee_ac_vol_min + 1
-#define ee_mn_vol_max ee_val_tg_on_dinh_ac + 1
-#define ee_mn_vol_min ee_mn_vol_max + 1
-#define ee_val_counter_start ee_mn_vol_min + 1
-#define ee_val_tg_run_on ee_val_counter_start + 1
-#define ee_val_tg_preheat ee_val_tg_run_on + 1
-#define ee_val_tg_press_start ee_val_tg_preheat + 1
-#define ee_val_tg_on_dinh_mn ee_val_tg_press_start + 1
-#define ee_val_tg_off_mn ee_val_tg_on_dinh_mn + 1
-#define ee_val_tg_giainhiet ee_val_tg_off_mn + 1
-#define ee_en_temp_mn ee_val_tg_giainhiet + 1
-#define ee_en_pressure_mn ee_en_temp_mn + 1
-#define ee_val_timer_delay_run_mn ee_en_pressure_mn + 1
-#define ee_style_mod_ac ee_val_timer_delay_run_mn + 1
-#define ee_flag_zero_delay_run_ac ee_style_mod_ac + 1
-#define ee_flag_zero_delay_run_mn ee_flag_zero_delay_run_ac + 1
-#define ee_val_tg_start_start ee_flag_zero_delay_run_mn + 1
-#define ee_val_counter_ac_fail ee_val_tg_start_start + 1
-#define ee_val_counter_mn_fail ee_val_counter_ac_fail + 1
-#define ee_val_tg_press_stop ee_val_counter_mn_fail + 1
-#define ee_en_temp_adc_mn ee_val_tg_press_stop + 1
-#define ee_en_pressure_adc_mn ee_en_temp_adc_mn + 1
-#define ee_list_resistor_pressure ee_en_pressure_adc_mn + 1 // 6byte
-#define ee_list_resistor_temp ee_list_resistor_pressure + 6 // 11byte
-#define ee_temp_adc_max ee_list_resistor_temp + 11
-#define ee_pressure_adc_max ee_temp_adc_max + 1
-
-#define ee_val_tg_air ee_pressure_adc_max + 1
-#define ee_time_check_sensor ee_val_tg_air + 1
-
-#define ee_thu_test ee_time_check_sensor + 1
-#define ee_gio_test ee_thu_test + 1
-#define ee_phut_test ee_gio_test + 1
-#define ee_chu_ky_test ee_phut_test + 1
-#define ee_chu_ky_hien_tai ee_chu_ky_test + 1
-#define ee_Control_input ee_chu_ky_hien_tai + 1
-#define ee_volt_Protect_Accu ee_Control_input + 1
-
-#define ee_Hash_Data ee_volt_Protect_Accu + 1 // 2byte
-#define ee_Cert_Data ee_Hash_Data + 2         // 2byte
-
-#define ee_Hour_Save_From ee_Cert_Data + 2     // 1byte
-#define ee_Min_Save_From ee_Hour_Save_From + 1 // 1byte
-#define ee_Hour_Save_To ee_Min_Save_From + 1   // 1byte
-#define ee_Min_Save_To ee_Hour_Save_To + 1     // 1byte
 
 //=============================================================
 // khai bao bien
@@ -513,6 +401,9 @@ void disable_reset(void);
 void Hash_Full(void);
 void check_full(void);
 float get_adc_accu(void);
+
+unsigned long read_eeprom16(unsigned char addr);
+void write_eeprom16(unsigned char addr, unsigned long data);
 
 // Phong Accu============
 float get_adc_accu(void)
@@ -4102,6 +3993,7 @@ void defaul_admin(void)
    counter_ac_fail = 0;
    error_code = 0;
    chu_ky_hien_tai = 0;
+   flag_accu_error_save_log = 0;
 }
 
 void defaul_data(void)
@@ -4141,6 +4033,7 @@ void defaul_data(void)
 
    input_dc_low = DC_LOW_LVL_1_MD;
    delta_dc = DC_LOW_DELTA_MD;
+   flag_accu_error = 0;
    //==========
 
    val_pressure_max = 2;
@@ -4455,6 +4348,39 @@ void check_full(void)
       chu_ky_test = 4;
       waitingData = 1;
    }
+
+   if (flag_accu_error > 1)
+   {
+      flag_accu_error = 0;
+      waitingData = 1;
+   }
+
+   if (flag_accu_error_save_log > 1)
+   {
+      flag_accu_error_save_log = 0;
+      waitingData = 1;
+   }
+
+   if (input_dc_low < 40 || input_dc_low > 60)
+   {
+      input_dc_low = 47;
+   }
+
+   if (delta_dc < 0 || delta_dc > 1)
+   {
+      delta_dc = 0.2;
+   }
+}
+
+void write_eeprom16(unsigned char addr, unsigned long data)
+{
+   write_eeprom(addr, make8(data, 0));
+   write_eeprom(addr + 1, make8(data, 1));
+}
+
+unsigned long read_eeprom16(unsigned char addr)
+{
+   return make16(read_eeprom(addr + 1), read_eeprom(addr));
 }
 
 void read_ram_ds1307(void)
@@ -4656,6 +4582,15 @@ void read_ram_ds1307(void)
    char eedata_phut_save_to = ree(ee_Min_Save_To);
    eerom_Hash_Data = eerom_Hash_Data + eedata_phut_save_to; //*
 
+   unsigned long eedata_input_dc_low = ree16(ee_input_dc_low);
+   eerom_Hash_Data += eedata_input_dc_low;
+
+   unsigned long eedata_delta_dc = ree16(ee_delta_dc);
+   eerom_Hash_Data += ee_delta_dc;
+
+   char eedata_flag_accu_error_save_log = ree(ee_flag_accu_error_save_log);
+   eerom_Hash_Data += eedata_flag_accu_error_save_log;
+
    eerom_Hash_Save = make16(read_eeprom(ee_Hash_Data + 1), read_eeprom(ee_Hash_Data));
    //====================================================================================
 
@@ -4852,7 +4787,16 @@ void read_ram_ds1307(void)
 
    char ram_phut_save_to = PCF8583_read_byte(ds1307_Min_Save_To);
    ram_Hash_Data = ram_Hash_Data + ram_phut_save_to; //*
-                                                     //=======
+
+   //=======
+   unsigned long ram_input_dc_low = make16(PCF8583_read_byte(ds1307_input_dc_low + 1), PCF8583_read_byte(ds1307_input_dc_low));
+   ram_Hash_Data += ram_input_dc_low;
+
+   unsigned long ram_delta_dc = make16(PCF8583_read_byte(ds1307_delta_dc + 1), PCF8583_read_byte(ds1307_delta_dc));
+   ram_Hash_Data += ram_delta_dc;
+
+   char ram_flag_accu_error_save_log = PCF8583_read_byte(ds1307_flag_accu_error_save_log);
+   ram_Hash_Data += ram_flag_accu_error_save_log;
 
    ram_Hash_Save = make16(PCF8583_read_byte(ds1307_Hash_Data + 1), PCF8583_read_byte(ds1307_Hash_Data));
 
@@ -4927,6 +4871,10 @@ void read_ram_ds1307(void)
       phut_save_to = ram_phut_save_to;
       //==========
 
+      input_dc_low = ram_input_dc_low / 10;
+      delta_dc = ram_delta_dc / 10;
+      flag_accu_error_save_log = ram_flag_accu_error_save_log;
+
       write_data_ee();
       Hash_Full();
    }
@@ -5000,6 +4948,10 @@ void read_ram_ds1307(void)
       gio_save_to = eedata_gio_save_to;
       phut_save_to = eedata_phut_save_to;
       //==========
+
+      input_dc_low = eedata_input_dc_low / 10;
+      delta_dc = eedata_delta_dc / 10;
+      flag_accu_error_save_log = eedata_flag_accu_error_save_log;
 
       write_ram_ds1307();
       Hash_Full();
@@ -5099,6 +5051,12 @@ void write_ram_ds1307(void)
    PCF8583_write_byte(ds1307_Hour_Save_To, gio_save_to);
    PCF8583_write_byte(ds1307_Min_Save_To, phut_save_to);
    //=======
+
+   PCF8583_write_byte(ds1307_input_dc_low, make8(input_dc_low * 10, 0));
+   PCF8583_write_byte(ds1307_input_dc_low + 1, make8(input_dc_low * 10, 1));
+   PCF8583_write_byte(ds1307_delta_dc, make8(delta_dc * 10, 0));
+   PCF8583_write_byte(ds1307_delta_dc + 1, make8(delta_dc * 10, 1));
+   PCF8583_write_byte(ds1307_flag_accu_error_save_log, flag_accu_error_save_log);
 }
 
 void write_data_ee(void)
@@ -5186,6 +5144,10 @@ void write_data_ee(void)
    wee(ee_Hour_Save_To, gio_save_to);
    wee(ee_Min_Save_To, phut_save_to);
    //=======
+
+   wee16(ee_input_dc_low, (input_dc_low * 10));
+   wee16(ee_delta_dc, (delta_dc * 10));
+   wee(ee_flag_accu_error_save_log, flag_accu_error_save_log);
 }
 
 void Hash_Full(void)
@@ -5317,6 +5279,9 @@ void Hash_Full(void)
    Hash_Data = Hash_Data + gio_save_to;
    Hash_Data = Hash_Data + phut_save_to;
    //==========
+   Hash_Data += input_dc_low * 10;
+   Hash_Data += delta_dc * 10;
+   Hash_Data += flag_accu_error_save_log;
 
    // 16bit
    PCF8583_write_byte(ds1307_Hash_Data, make8(Hash_Data, 0));
