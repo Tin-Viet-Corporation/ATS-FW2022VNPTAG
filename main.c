@@ -5143,8 +5143,8 @@ void write_data_ee(void)
    wee(ee_Min_Save_To, phut_save_to);
    //=======
 
-   wee16(ee_input_dc_low, (unsigned long)(input_dc_low * 10));
-   wee16(ee_delta_dc, (unsigned long)(delta_dc * 10));
+   wee(ee_input_dc_low, (int)(input_dc_low * 10));
+   wee(ee_delta_dc, (int)(delta_dc * 10));
    wee(ee_flag_accu_error_save_log, flag_accu_error_save_log);
 }
 
