@@ -4585,10 +4585,10 @@ void read_ram_ds1307(void)
    unsigned long eedata_input_dc_low = ree16(ee_input_dc_low);
    eerom_Hash_Data += eedata_input_dc_low;
 
-   // unsigned long eedata_delta_dc = ree16(ee_delta_dc);
+   unsigned long eedata_delta_dc = ree16(ee_delta_dc);
    // eerom_Hash_Data += ee_delta_dc;
 
-   // char eedata_flag_accu_error_save_log = ree(ee_flag_accu_error_save_log);
+   char eedata_flag_accu_error_save_log = ree(ee_flag_accu_error_save_log);
    // eerom_Hash_Data += eedata_flag_accu_error_save_log;
 
    eerom_Hash_Save = make16(read_eeprom(ee_Hash_Data + 1), read_eeprom(ee_Hash_Data));
