@@ -5052,10 +5052,10 @@ void write_ram_ds1307(void)
    PCF8583_write_byte(ds1307_Min_Save_To, phut_save_to);
    //=======
 
-   PCF8583_write_byte(ds1307_input_dc_low, make8((int)(input_dc_low * 10), 0));
-   PCF8583_write_byte(ds1307_input_dc_low + 1, make8((int)(input_dc_low * 10), 1));
-   PCF8583_write_byte(ds1307_delta_dc, make8((int)(delta_dc * 10), 0));
-   PCF8583_write_byte(ds1307_delta_dc + 1, make8((int)(delta_dc * 10), 1));
+   PCF8583_write_byte(ds1307_input_dc_low, make8((unsigned long)(input_dc_low * 10), 0));
+   PCF8583_write_byte(ds1307_input_dc_low + 1, make8((unsigned long)(input_dc_low * 10), 1));
+   PCF8583_write_byte(ds1307_delta_dc, make8((unsigned long)(delta_dc * 10), 0));
+   PCF8583_write_byte(ds1307_delta_dc + 1, make8((unsigned long)(delta_dc * 10), 1));
    PCF8583_write_byte(ds1307_flag_accu_error_save_log, flag_accu_error_save_log);
 }
 
