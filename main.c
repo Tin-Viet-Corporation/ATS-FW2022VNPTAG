@@ -5279,9 +5279,9 @@ void Hash_Full(void)
    Hash_Data = Hash_Data + gio_save_to;
    Hash_Data = Hash_Data + phut_save_to;
    //==========
-   // Hash_Data += input_dc_low * 10;
-   // Hash_Data += delta_dc * 10;
-   // Hash_Data += flag_accu_error_save_log;
+   Hash_Data += input_dc_low * 10;
+   Hash_Data += delta_dc * 10;
+   Hash_Data += flag_accu_error_save_log;
 
    // 16bit
    PCF8583_write_byte(ds1307_Hash_Data, make8(Hash_Data, 0));
