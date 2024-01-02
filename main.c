@@ -4583,7 +4583,7 @@ void read_ram_ds1307(void)
    eerom_Hash_Data = eerom_Hash_Data + eedata_phut_save_to; //*
 
    unsigned long eedata_input_dc_low = ree16(ee_input_dc_low);
-   eerom_Hash_Data += eedata_input_dc_low;
+   // eerom_Hash_Data += eedata_input_dc_low;
 
    unsigned long eedata_delta_dc = ree16(ee_delta_dc);
    // eerom_Hash_Data += ee_delta_dc;
