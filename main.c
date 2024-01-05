@@ -404,6 +404,7 @@ float get_adc_accu(void);
 
 unsigned long read_eeprom16(unsigned char addr);
 void write_eeprom16(unsigned char addr, unsigned long data);
+void write_ram16(unsigned char addr, unsigned long data);
 
 // Phong Accu============
 float get_adc_accu(void)
@@ -4383,6 +4384,11 @@ unsigned long read_eeprom16(unsigned char addr)
    return make16(read_eeprom(addr + 1), read_eeprom(addr));
 }
 
+void write_ram16(unsigned char addr, unsigned long data) {
+   PCF8583_write_byte(addr,  make8(data, 0));
+   PCF8583_write_byte(addr + 1,  make8(data, 1));
+}
+
 void read_ram_ds1307(void)
 {
 
@@ -5052,8 +5058,8 @@ void write_ram_ds1307(void)
    PCF8583_write_byte(ds1307_Min_Save_To, phut_save_to);
    //=======
 
-   PCF8583_write_byte(ds1307_input_dc_low, (unsigned long)(input_dc_low * 10));
-   PCF8583_write_byte(ds1307_delta_dc, (unsigned long)(delta_dc * 10));
+   write_ram16(ds1307_input_dc_low, (unsigned long)(input_dc_low * 10));
+   write_ram16(ds1307_delta_dc, (unsigned long)(delta_dc * 10));
    PCF8583_write_byte(ds1307_flag_accu_error_save_log, flag_accu_error_save_log);
 }
 
