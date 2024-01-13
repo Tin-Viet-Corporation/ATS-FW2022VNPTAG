@@ -5906,9 +5906,6 @@ void auto_run(void)
             // wee(ee_error_code,error_code);
             // Hash_Full();
          }
-
-         if (process_kdt_mn == 10)
-            output_high(OUT_ACCU_ERROR); // TODO remove
          break;
 
       //==============================================================================
@@ -6112,7 +6109,11 @@ void auto_run(void)
 
       case 13:
          if (tg_giainhiet == 0)
+         {
             process_kdt_mn = 0;
+            output_high(OUT_ACCU_ERROR); // TODO remove
+         }
+
          en_out_mn = 0;
          en_fuel_mn = 0;  // nhien lieu cap cho mn
          en_start_mn = 0; // tat may no
