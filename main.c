@@ -4204,7 +4204,7 @@ void check_full(void)
       waitingData = 1;
    }
 
-   if (val_tg_run_on > 24 || val_tg_run_on < 1)
+   if (val_tg_run_on > 24 || val_tg_run_on < 0) // TODO change to 1
    {
       val_tg_run_on = 24;
       waitingData = 1;
