@@ -5800,9 +5800,8 @@ void auto_run(void)
          en_out_mn = 1; // dong khoi dong tu cap NGUONG cho dai
          if (tg_run_on == 0 && tg_phut_run_on == 0)
          {
-            process_kdt_mn = 10;    // nghi de lam mat may nổ
-            en_out_mn = 0;          //
-            flag_do_phong_accu = 0; // cho phep do phong accu
+            process_kdt_mn = 10; // nghi de lam mat may nổ
+            en_out_mn = 0;       //
          }
          //==============
          switch (energy_save)
@@ -6083,7 +6082,7 @@ void auto_run(void)
          }
 
          en_out_mn = 0;
-         tg_giainhiet = energy_save == 1 ? 0 : val_tg_giainhiet;
+         tg_giainhiet = energy_save == 1 ? val_tg_off_mn : val_tg_giainhiet;
          break;
 
       case 12:
@@ -6111,6 +6110,7 @@ void auto_run(void)
          if (tg_giainhiet == 0)
          {
             process_kdt_mn = 0;
+            flag_do_phong_accu = 0; // cho phep do phong accu
          }
 
          en_out_mn = 0;
