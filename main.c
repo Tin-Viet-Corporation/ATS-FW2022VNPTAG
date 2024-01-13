@@ -5817,16 +5817,14 @@ void auto_run(void)
             if (tempnow >= tempfrom)
             { // che do tiet kiem nang luong
                timer_save_oil_mn = (24 * 60) - tempfrom + tempto;
-               process_kdt_mn = 20;         // nghi de lam mat may nổ
-               en_out_mn = 0;               //
-               output_high(OUT_ACCU_ERROR); // TODO remove
+               process_kdt_mn = 20; // nghi de lam mat may nổ
+               en_out_mn = 0;       //
             }
             else if (tempnow < tempto)
             {
                timer_save_oil_mn = tempto - tempnow;
-               process_kdt_mn = 20;         // nghi de lam mat may nổ
-               en_out_mn = 0;               //
-               output_high(OUT_ACCU_ERROR); // TODO remove
+               process_kdt_mn = 20; // nghi de lam mat may nổ
+               en_out_mn = 0;       //
             }
             else
             {
@@ -5908,6 +5906,9 @@ void auto_run(void)
             // wee(ee_error_code,error_code);
             // Hash_Full();
          }
+
+         if (process_kdt_mn == 10)
+            output_high(OUT_ACCU_ERROR); // TODO remove
          break;
 
       //==============================================================================
