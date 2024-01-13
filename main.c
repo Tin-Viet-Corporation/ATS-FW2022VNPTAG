@@ -3443,9 +3443,9 @@ void process_down(void)
             val_counter_start = 4; // tu 2 đến 4 lần
          break;
 
-      case 4: // THOI GIAN CHAY MAY NO LIEN TUC
-         if (--val_tg_run_on < 1)
-            val_tg_run_on = 24; // tu 4 -8 giờ
+      case 4:                     // THOI GIAN CHAY MAY NO LIEN TUC
+         if (--val_tg_run_on < 1) // TODO: change to 24
+            val_tg_run_on = 0;    // tu 4 -8 giờ
          break;
 
       case 5: // thoi gian suoi may no
