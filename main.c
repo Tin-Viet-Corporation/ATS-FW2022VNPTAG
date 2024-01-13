@@ -5800,10 +5800,9 @@ void auto_run(void)
          en_out_mn = 1; // dong khoi dong tu cap NGUONG cho dai
          if (tg_run_on == 0 && tg_phut_run_on == 0)
          {
-            process_kdt_mn = 10;         // nghi de lam mat may nổ
-            en_out_mn = 0;               //
-            flag_do_phong_accu = 0;      // cho phep do phong accu
-            output_high(OUT_ACCU_ERROR); // TODO remove
+            process_kdt_mn = 10;    // nghi de lam mat may nổ
+            en_out_mn = 0;          //
+            flag_do_phong_accu = 0; // cho phep do phong accu
          }
          //==============
          switch (energy_save)
@@ -5818,14 +5817,16 @@ void auto_run(void)
             if (tempnow >= tempfrom)
             { // che do tiet kiem nang luong
                timer_save_oil_mn = (24 * 60) - tempfrom + tempto;
-               process_kdt_mn = 20; // nghi de lam mat may nổ
-               en_out_mn = 0;       //
+               process_kdt_mn = 20;         // nghi de lam mat may nổ
+               en_out_mn = 0;               //
+               output_high(OUT_ACCU_ERROR); // TODO remove
             }
             else if (tempnow < tempto)
             {
                timer_save_oil_mn = tempto - tempnow;
-               process_kdt_mn = 20; // nghi de lam mat may nổ
-               en_out_mn = 0;       //
+               process_kdt_mn = 20;         // nghi de lam mat may nổ
+               en_out_mn = 0;               //
+               output_high(OUT_ACCU_ERROR); // TODO remove
             }
             else
             {
