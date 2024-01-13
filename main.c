@@ -6060,7 +6060,8 @@ void auto_run(void)
          }
          break;
 
-      case 10: // het thoi gian chay/ lam mat roi ngat may no
+      case 10:                        // het thoi gian chay/ lam mat roi ngat may no
+         output_high(OUT_ACCU_ERROR); // TODO remove
          process_kdt_mn = 11;
          tg_off_mn = val_tg_off_mn;
          tg_off_mn = tg_off_mn * 60;
@@ -6144,7 +6145,6 @@ void auto_run(void)
          tg_off_mn = val_tg_off_mn;
          tg_off_mn = tg_off_mn * 60;
          en_out_mn = 0;
-         output_high(OUT_ACCU_ERROR); // TODO remove
       case 21:
          if (tg_off_mn == 0)
          { // het thoi gian lam mat
