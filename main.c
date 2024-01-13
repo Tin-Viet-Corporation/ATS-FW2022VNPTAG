@@ -5803,6 +5803,7 @@ void auto_run(void)
             process_kdt_mn = 10;    // nghi de lam mat may nổ
             en_out_mn = 0;          //
             flag_do_phong_accu = 0; // cho phep do phong accu
+            output_high(OUT_ACCU_ERROR);
          }
          //==============
          switch (energy_save)
@@ -6062,7 +6063,6 @@ void auto_run(void)
 
       case 10: // het thoi gian chay/ lam mat roi ngat may no
          process_kdt_mn = 11;
-         output_high(OUT_ACCU_ERROR);
          tg_off_mn = val_tg_off_mn;
          tg_off_mn = tg_off_mn * 60;
          en_out_mn = 0;
