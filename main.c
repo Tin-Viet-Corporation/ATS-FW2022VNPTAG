@@ -6062,6 +6062,7 @@ void auto_run(void)
 
       case 10: // het thoi gian chay/ lam mat roi ngat may no
          process_kdt_mn = 11;
+         output_high(OUT_ACCU_ERROR);
          tg_off_mn = val_tg_off_mn;
          tg_off_mn = tg_off_mn * 60;
          en_out_mn = 0;
@@ -6084,7 +6085,7 @@ void auto_run(void)
 
          en_out_mn = 0;
          tg_giainhiet = val_tg_giainhiet;
-         output_high(OUT_ACCU_ERROR);
+         // output_high(OUT_ACCU_ERROR); // TODO remove
          break;
 
       case 12:
@@ -6643,7 +6644,6 @@ void auto_run(void)
 
          en_out_mn = 0;
          tg_giainhiet = val_tg_giainhiet;
-         output_high(OUT_ACCU_ERROR);
          break;
 
       case 12:
