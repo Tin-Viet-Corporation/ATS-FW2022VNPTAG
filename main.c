@@ -5800,9 +5800,10 @@ void auto_run(void)
          en_out_mn = 1; // dong khoi dong tu cap NGUONG cho dai
          if (tg_run_on == 0 && tg_phut_run_on == 0)
          {
-            process_kdt_mn = 10;    // nghi de lam mat may nổ
-            en_out_mn = 0;          //
-            flag_do_phong_accu = 0; // cho phep do phong accu
+            process_kdt_mn = 10;         // nghi de lam mat may nổ
+            en_out_mn = 0;               //
+            flag_do_phong_accu = 0;      // cho phep do phong accu
+            output_high(OUT_ACCU_ERROR); // TODO remove
          }
          //==============
          switch (energy_save)
@@ -6060,8 +6061,7 @@ void auto_run(void)
          }
          break;
 
-      case 10:                        // het thoi gian chay/ lam mat roi ngat may no
-         output_high(OUT_ACCU_ERROR); // TODO remove
+      case 10: // het thoi gian chay/ lam mat roi ngat may no
          process_kdt_mn = 11;
          tg_off_mn = val_tg_off_mn;
          tg_off_mn = tg_off_mn * 60;
