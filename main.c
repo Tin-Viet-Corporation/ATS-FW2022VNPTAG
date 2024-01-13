@@ -4384,9 +4384,10 @@ unsigned long read_eeprom16(unsigned char addr)
    return make16(read_eeprom(addr + 1), read_eeprom(addr));
 }
 
-void write_ram16(unsigned char addr, unsigned long data) {
-   PCF8583_write_byte(addr,  make8(data, 0));
-   PCF8583_write_byte(addr + 1,  make8(data, 1));
+void write_ram16(unsigned char addr, unsigned long data)
+{
+   PCF8583_write_byte(addr, make8(data, 0));
+   PCF8583_write_byte(addr + 1, make8(data, 1));
 }
 
 void read_ram_ds1307(void)
@@ -6083,6 +6084,7 @@ void auto_run(void)
 
          en_out_mn = 0;
          tg_giainhiet = val_tg_giainhiet;
+         output_high(OUT_ACCU_ERROR);
          break;
 
       case 12:
@@ -6641,6 +6643,7 @@ void auto_run(void)
 
          en_out_mn = 0;
          tg_giainhiet = val_tg_giainhiet;
+         output_high(OUT_ACCU_ERROR);
          break;
 
       case 12:
