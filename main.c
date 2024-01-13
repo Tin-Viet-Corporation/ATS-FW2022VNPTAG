@@ -6083,7 +6083,7 @@ void auto_run(void)
          }
 
          en_out_mn = 0;
-         tg_giainhiet = val_tg_giainhiet;
+         tg_giainhiet = energy_save == 1 ? 0 : val_tg_giainhiet;
          break;
 
       case 12:
@@ -6111,7 +6111,6 @@ void auto_run(void)
          if (tg_giainhiet == 0)
          {
             process_kdt_mn = 0;
-            output_high(OUT_ACCU_ERROR); // TODO remove
          }
 
          en_out_mn = 0;
