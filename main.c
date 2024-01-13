@@ -274,7 +274,7 @@ char val_tg_off_mn = 0;
 char val_tg_air = 0, tg_air = 0;
 long tg_off_mn = 0;
 short mn_vol_fail = 0;
-char val_tg_giainhiet = 0, tg_giainhiet = 2; // TIMER tam dung //TODO change back to 0
+char val_tg_giainhiet = 0, tg_giainhiet = 0; // TIMER tam dung
 long tong_gio_chay_mn = 0;
 char tong_phut_chay_mn = 0;
 short flag_save_tg_chay_mn = 0;
@@ -6084,7 +6084,6 @@ void auto_run(void)
 
          en_out_mn = 0;
          tg_giainhiet = val_tg_giainhiet;
-         // output_high(OUT_ACCU_ERROR); // TODO remove
          break;
 
       case 12:
@@ -6145,7 +6144,7 @@ void auto_run(void)
          tg_off_mn = val_tg_off_mn;
          tg_off_mn = tg_off_mn * 60;
          en_out_mn = 0;
-
+         output_high(OUT_ACCU_ERROR); // TODO remove
       case 21:
          if (tg_off_mn == 0)
          { // het thoi gian lam mat
