@@ -417,6 +417,12 @@ float get_adc_accu(void)
       adc_accu = adc_temp > adc_accu ? adc_temp : adc_accu;
    }
    adc_accu = (adc_accu - 19) * (52.9 / 869) + 1.1;
+   if (energy_save == 1 && adc_accu <= DC_LOW_LVL_2)
+   {
+      output_high(OUT_ACCU_ERROR);
+      flag_accu_error = 1;
+      flag_accu_error_save_log = 1;
+   }
    return adc_accu;
 }
 
@@ -2617,6 +2623,7 @@ void lcd_printf(char code_printf)
       break;
 
    case 55:
+      float adc_accu = get_adc_accu();
       if ((Control_input == 1 || Control_input == 2) && volt_ChargeDC > 5)
       {
          PRINTF(LCD_PUTCHAR, "REMOTE START : %1u", counter_remote_start);
@@ -2644,7 +2651,7 @@ void lcd_printf(char code_printf)
             }
             else
             {
-               PRINTF(LCD_PUTCHAR, "DC:%02.1fV", get_adc_accu());
+               PRINTF(LCD_PUTCHAR, "DC:%02.1fV", adc_accu);
             }
          }
       }
@@ -5420,12 +5427,6 @@ void auto_run(void)
          // Phong Accu
          val_progam = val_progam | 0b00100000;
          float adc_phong_accu = !flag_do_phong_accu ? get_adc_accu() : input_dc_low - delta_dc;
-         if (adc_phong_accu <= DC_LOW_LVL_2)
-         {
-            output_high(OUT_ACCU_ERROR);
-            flag_accu_error = 1;
-            flag_accu_error_save_log = 1;
-         }
          if (adc_phong_accu <= input_dc_low - delta_dc)
          {
             val_progam = val_progam | 0b00010000;
