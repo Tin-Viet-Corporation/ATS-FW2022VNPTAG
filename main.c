@@ -1177,8 +1177,8 @@ void main()
          OUT_LED_STATUS_ON();
 
       OUT_LED_FAIL_MN_OFF();
-      if (en_led_fail_mn)
-         OUT_LED_FAIL_MN_ON();
+      if (en_led_fail_mn || flag_accu_error)
+         OUT_LED_FAIL_MN_ON(); // Dang xai chung den error mn va error accu
 
       OUT_PREHEAT_MN_OFF();
       if (en_preheat_mn)
