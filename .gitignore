@@ -98,3 +98,4 @@ disassembly/
 *.mcs
 *.mptags
 *.tagsrc
+.DS_Store

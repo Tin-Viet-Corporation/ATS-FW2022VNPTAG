@@ -420,6 +420,7 @@ float get_adc_accu(void)
    if (energy_save == 1 && adc_accu <= DC_LOW_LVL_2)
    {
       output_high(OUT_ACCU_ERROR);
+      output_high(OUT_LED3);
       flag_accu_error = 1;
       flag_accu_error_save_log = 1;
    }
