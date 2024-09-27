@@ -212,7 +212,7 @@ char *sch_1 = 0, *sch_2 = 0, val_sch_1 = 0, val_sch_2 = 0;
 char password[5] = {"1111"};
 char passwordadmin[5] = {"2222"};
 char str_temp[25] = {0};
-char verson_fw[16] = {"FW=2024VNPTAG"};
+char verson_fw[16] = {"FW=2024VNPTAG DC"};
 char time_reset_password = 0;
 short flag_admin = 0;
 short waitingData = 1;
