@@ -60,4 +60,6 @@
 #define ee_delta_dc ee_input_dc_low + 2             // 2byte
 #define ee_flag_accu_error_save_log ee_delta_dc + 2 // 1byte
 
+#define ee_flag_switch ee_flag_accu_error_save_log + 1 // 1byte
+
 #endif

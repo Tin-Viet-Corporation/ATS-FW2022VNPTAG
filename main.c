@@ -212,7 +212,7 @@ char *sch_1 = 0, *sch_2 = 0, val_sch_1 = 0, val_sch_2 = 0;
 char password[5] = {"1111"};
 char passwordadmin[5] = {"2222"};
 char str_temp[25] = {0};
-char verson_fw[16] = {"FW=2024VNPTAG DC"};
+char verson_fw[16] = {"2025VNPT DC LOW"};
 char time_reset_password = 0;
 short flag_admin = 0;
 short waitingData = 1;
@@ -1265,7 +1265,7 @@ void main()
 void display_center(void)
 {
    unsigned char menu_main[20][20] = {{""},
-                                      {"MAT KHAU !"},
+                                      {"MAT KHAU:"},
                                       {"NGUONG DIEN LUOI"},
                                       {"NGUONG M.P DIEN"},
                                       {"TIET KIEM DAU MN"},
@@ -1389,7 +1389,7 @@ void display_center(void)
             break;
 
          case 1:
-            PRINTF(LCD_PUTCHAR, "2. %03.0f", adc_mn_2);
+            PRINTF(LCD_PUTCHAR, "2. %03.0f DCL:%02.1f", adc_mn_2, get_adc_accu());
             break;
 
          case 2:
@@ -2433,7 +2433,7 @@ void lcd_printf(char code_printf)
       break;
 
    case 27:
-      PRINTF(LCD_PUTCHAR, "TEST OK!");
+      PRINTF(LCD_PUTCHAR, "TEST OK");
       break;
 
    case 28:
@@ -2704,7 +2704,7 @@ void lcd_printf(char code_printf)
       break;
 
    case 65:
-      PRINTF(LCD_PUTCHAR, "READING DATA !!!!");
+      PRINTF(LCD_PUTCHAR, "READING DATA");
       break;
 
    case 66:
@@ -2712,7 +2712,7 @@ void lcd_printf(char code_printf)
       break;
 
    case 67:
-      PRINTF(LCD_PUTCHAR, "REMOTE START!");
+      PRINTF(LCD_PUTCHAR, "REMOTE START");
       break;
 
    case 68:
@@ -2744,7 +2744,8 @@ void lcd_printf(char code_printf)
       break;
 
    case 75:
-      PRINTF(LCD_PUTCHAR, "%02u Tuan", val_printf_2);
+      if (chu_ky_test == 0) PRINTF(LCD_PUTCHAR, "KO SU DUNG");
+      else PRINTF(LCD_PUTCHAR, "%02u Tuan", val_printf_2);
       break;
 
    case 76:
@@ -4002,6 +4003,7 @@ void defaul_admin(void)
    counter_ac_fail = 0;
    error_code = 0;
    chu_ky_hien_tai = 0;
+   flag_switch = 0;
    flag_accu_error_save_log = 0;
 }
 
@@ -4352,12 +4354,6 @@ void check_full(void)
       waitingData = 1;
    }
 
-   if (chu_ky_test < 1)
-   {
-      chu_ky_test = 4;
-      waitingData = 1;
-   }
-
    if (flag_accu_error > 1)
    {
       flag_accu_error = 0;
@@ -4575,6 +4571,9 @@ void read_ram_ds1307(void)
    char eedata_chu_ky_hien_tai = ree(ee_chu_ky_hien_tai);
    eerom_Hash_Data = eerom_Hash_Data + eedata_chu_ky_hien_tai; //*
 
+   char eedata_flag_switch = ree(ee_flag_switch)
+   eerom_Hash_Data = eerom_Hash_Data + eedata_flag_switch; //*
+
    char eedata_Control_input = ree(ee_Control_input);
    eerom_Hash_Data = eerom_Hash_Data + eedata_Control_input; //*
 
@@ -4780,6 +4779,9 @@ void read_ram_ds1307(void)
    char ram_chu_ky_hien_tai = PCF8583_read_byte(ds1307_chu_ky_hien_tai);
    ram_Hash_Data = ram_Hash_Data + ram_chu_ky_hien_tai; //*
 
+   char ram_flag_switch = PCF8583_read_byte(ds1307_flag_switch);
+   ram_Hash_Data = ram_Hash_Data + ram_flag_switch; //*
+
    char ram_Control_input = PCF8583_read_byte(ds1307_Control_input);
    ram_Hash_Data = ram_Hash_Data + ram_Control_input; //*
 
@@ -4875,6 +4877,8 @@ void read_ram_ds1307(void)
       phut_test = ram_phut_test;                 //*
       chu_ky_test = ram_chu_ky_test;             //*
       chu_ky_hien_tai = ram_chu_ky_hien_tai;     //*
+      flag_switch = ram_flag_switch;     //*
+
       Control_input = ram_Control_input;         //*
 
       volt_Protect_Accu = ram_volt_Protect_Accu / 10; //*
@@ -4953,6 +4957,7 @@ void read_ram_ds1307(void)
       phut_test = eedata_phut_test;                 //*
       chu_ky_test = eedata_chu_ky_test;             //*
       chu_ky_hien_tai = eedata_chu_ky_hien_tai;     //*
+      flag_switch = eedata_flag_switch;
       Control_input = eedata_Control_input;         //*
 
       volt_Protect_Accu = eedata_volt_Protect_Accu / 10; //*
@@ -5055,6 +5060,7 @@ void write_ram_ds1307(void)
 
    PCF8583_write_byte(ds1307_chu_ky_test, chu_ky_test);
    PCF8583_write_byte(ds1307_chu_ky_hien_tai, chu_ky_hien_tai);
+   PCF8583_write_byte(ds1307_flag_switch, flag_switch);
    PCF8583_write_byte(ds1307_Control_input, Control_input);
 
    temp = volt_Protect_Accu * 10;
@@ -5146,6 +5152,7 @@ void write_data_ee(void)
 
    wee(ee_chu_ky_test, chu_ky_test);
    wee(ee_chu_ky_hien_tai, chu_ky_hien_tai);
+   wee(ee_flag_switch, flag_switch);
    wee(ee_Control_input, Control_input);
 
    temp = volt_Protect_Accu * 10;
@@ -5279,6 +5286,8 @@ void Hash_Full(void)
 
    Hash_Data = Hash_Data + chu_ky_hien_tai; //*
 
+   Hash_Data = Hash_Data + flag_switch;
+
    Hash_Data = Hash_Data + Control_input; //*
 
    Hash_Data = Hash_Data + volt_Protect_Accu * 10; //*
@@ -5326,7 +5335,7 @@ void auto_run(void)
    tempto = (long)gio_save_to * 60 + (long)phut_save_to;
    // tempnow    =   (long)gio_ht*60            +   (long)phut_ht;
 
-   if (thu_test == thu_ht)
+   if (chu_ky_test > 0 && thu_test == thu_ht)
    {
       if (tempnow >= temptest && flag_switch == 0)
       {

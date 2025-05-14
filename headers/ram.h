@@ -60,5 +60,8 @@
 #define ds1307_delta_dc ds1307_input_dc_low + 2             // 2byte
 #define ds1307_flag_accu_error_save_log ds1307_delta_dc + 2 // 1byte
 
+#define ds1307_flag_switch ds1307_flag_accu_error_save_log + 1 // 1byte
+
+
 // bit cuoi cung ff
 #endif
